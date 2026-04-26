@@ -35,7 +35,10 @@ jobs:
           cache: pnpm
 
       - name: Enable Corepack
-        run: corepack enable
+        run: |
+          corepack enable
+          corepack prepare pnpm@10.11.0 --activate
+          pnpm --version
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
