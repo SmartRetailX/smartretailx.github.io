@@ -73,7 +73,7 @@ function Navbar() {
                   key={link.name}
                   to={link.path}
                   onClick={() => setIsOpen(false)}
-                  className={`block px-3 py-2 rounded-md text-base font-medium flex items-center gap-3 ${
+                  className={`block px-3 py-2 rounded-md text-base font-medium items-center gap-3 ${
                     location.pathname === link.path
                       ? 'text-blue-400 bg-white/10'
                       : 'text-gray-300 hover:text-white hover:bg-white/5'
