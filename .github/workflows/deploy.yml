@@ -5,6 +5,11 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      reason:
+        description: Why are you running this deployment manually?
+        required: false
+        type: string
 
 permissions:
   contents: read
