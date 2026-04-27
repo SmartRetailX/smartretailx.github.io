@@ -317,7 +317,7 @@ export const teamMembers: TeamMember[] = [
     githubUrl: 'https://github.com/ShanelkaPramuditha',
     focus: 'Sinhala Voice Assistant',
     initials: 'PW',
-    photoSrc: publicFile('images/members/Shanelka.jpg'),
+    photoSrc: publicFile('images/members/shanelka.jpg'),
   },
   {
     studentId: 'IT22367044',
@@ -329,7 +329,7 @@ export const teamMembers: TeamMember[] = [
     githubUrl: 'https://github.com/Eshan-Nayanapriya',
     focus: 'Customer Segmentation',
     initials: 'HN',
-    photoSrc: publicFile('images/members/Eshan.jpg'),
+    photoSrc: publicFile('images/members/eshan.jpg'),
   },
   {
     studentId: 'IT22326072',
@@ -341,7 +341,7 @@ export const teamMembers: TeamMember[] = [
     githubUrl: 'https://github.com/ItzNadeesH',
     focus: 'BI Dashboard ML Service',
     initials: 'NN',
-    photoSrc: publicFile('images/members/Nadeesh.jpg'),
+    photoSrc: publicFile('images/members/nadeesh.jpg'),
   },
   {
     studentId: 'IT22306968',
@@ -353,6 +353,6 @@ export const teamMembers: TeamMember[] = [
     githubUrl: 'https://github.com/thathsaraDinu',
     focus: 'Personalized Promotion Engine',
     initials: 'DW',
-    photoSrc: publicFile('images/members/Thathsara.png'),
+    photoSrc: publicFile('images/members/thathsara.jpg'),
   },
 ];
