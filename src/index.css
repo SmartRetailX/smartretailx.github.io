@@ -7,7 +7,25 @@
 }
 
 @layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
-    @apply antialiased;
+    @apply bg-slate-50 text-slate-900 antialiased;
+  }
+
+  #root {
+    min-height: 100vh;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
   }
 }

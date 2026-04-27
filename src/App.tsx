@@ -1,88 +1,118 @@
-import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'motion/react';
-import { LayoutDashboard, MessageSquare, Users, TrendingUp, Sparkles, Menu, X, ChevronRight, Github, ExternalLink } from 'lucide-react';
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
+import { BrowserRouter as Router, Link, Route, Routes, useLocation } from 'react-router-dom';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import {
+  CalendarCheck,
+  FileText,
+  Home as HomeIcon,
+  Mail,
+  Menu,
+  Presentation,
+  SearchCheck,
+  Users,
+  X,
+} from 'lucide-react';
+import About from './pages/About';
+import Contact from './pages/Contact';
+import Documents from './pages/Documents';
+import Domain from './pages/Domain';
 import Home from './pages/Home';
-import VoiceAssistant from './pages/VoiceAssistant';
-import Segmentation from './pages/Segmentation';
-import BIDashboard from './pages/BIDashboard';
-import PromotionEngine from './pages/PromotionEngine';
+import Milestones from './pages/Milestones';
+import Presentations from './pages/Presentations';
+
+const navLinks = [
+  { name: 'Home', path: '/', icon: HomeIcon },
+  { name: 'Domain', path: '/domain', icon: SearchCheck },
+  { name: 'Milestones', path: '/milestones', icon: CalendarCheck },
+  { name: 'Documents', path: '/documents', icon: FileText },
+  { name: 'Slides', path: '/slides', icon: Presentation },
+  { name: 'About Us', path: '/about', icon: Users },
+  { name: 'Contact Us', path: '/contact', icon: Mail },
+];
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
-  const navLinks = [
-    { name: 'Overview', path: '/', icon: LayoutDashboard },
-    { name: 'Voice AI', path: '/voice', icon: MessageSquare },
-    { name: 'Segmentation', path: '/segmentation', icon: Users },
-    { name: 'Analytics', path: '/analytics', icon: TrendingUp },
-    { name: 'Promotions', path: '/promotions', icon: Sparkles },
-  ];
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location.pathname]);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-white/10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex items-center">
-            <Link to="/" className="text-white font-bold text-xl flex items-center gap-2">
-              <div className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center">S</div>
-              <span className="tracking-tight">SmartRetailX</span>
-            </Link>
-          </div>
-          <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-4">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  to={link.path}
-                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                    location.pathname === link.path
-                      ? 'text-blue-400 bg-white/10'
-                      : 'text-gray-300 hover:text-white hover:bg-white/5'
-                  }`}
-                >
-                  {link.name}
-                </Link>
-              ))}
-            </div>
-          </div>
-          <div className="md:hidden">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none"
-            >
-              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-          </div>
+    <nav className="fixed inset-x-0 top-0 z-50 border-b border-slate-200 bg-white/95 shadow-sm backdrop-blur">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <Link
+          to="/"
+          className="flex items-center gap-3 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+          aria-label="SmartRetailX home"
+        >
+          <img
+            src="/images/logo/logo.png"
+            alt="SmartRetailX logo"
+            className="h-9 w-auto"
+            loading="eager"
+            decoding="async"
+          />
+          <span className="text-lg font-black tracking-tight text-slate-950">SmartRetailX</span>
+        </Link>
+
+        <div className="hidden items-center gap-1 lg:flex">
+          {navLinks.map((link) => {
+            const isActive = location.pathname === link.path;
+
+            return (
+              <Link
+                key={link.name}
+                to={link.path}
+                aria-current={isActive ? 'page' : undefined}
+                className={`rounded-md px-3 py-2 text-sm font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 ${
+                  isActive ? 'bg-blue-50 text-blue-700' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-950'
+                }`}
+              >
+                {link.name}
+              </Link>
+            );
+          })}
         </div>
+
+        <button
+          type="button"
+          onClick={() => setIsOpen((open) => !open)}
+          className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-slate-300 text-slate-700 transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 lg:hidden"
+          aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          aria-expanded={isOpen}
+        >
+          {isOpen ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
+        </button>
       </div>
 
-      {/* Mobile menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-black/90 border-b border-white/10 overflow-hidden"
+            transition={{ duration: 0.2 }}
+            className="overflow-hidden border-t border-slate-200 bg-white lg:hidden"
           >
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  to={link.path}
-                  onClick={() => setIsOpen(false)}
-                  className={`block px-3 py-2 rounded-md text-base font-medium items-center gap-3 ${
-                    location.pathname === link.path
-                      ? 'text-blue-400 bg-white/10'
-                      : 'text-gray-300 hover:text-white hover:bg-white/5'
-                  }`}
-                >
-                  <link.icon className="w-5 h-5" />
-                  {link.name}
-                </Link>
-              ))}
+            <div className="mx-auto grid max-w-7xl gap-1 px-4 py-3 sm:px-6">
+              {navLinks.map((link) => {
+                const isActive = location.pathname === link.path;
+
+                return (
+                  <Link
+                    key={link.name}
+                    to={link.path}
+                    aria-current={isActive ? 'page' : undefined}
+                    className={`flex items-center gap-3 rounded-md px-3 py-3 text-sm font-bold ${
+                      isActive ? 'bg-blue-50 text-blue-700' : 'text-slate-700 hover:bg-slate-100'
+                    }`}
+                  >
+                    <link.icon className="h-4 w-4" aria-hidden="true" />
+                    {link.name}
+                  </Link>
+                );
+              })}
             </div>
           </motion.div>
         )}
@@ -91,82 +121,86 @@ function Navbar() {
   );
 }
 
-function PageTransition({ children }: { children: React.ReactNode }) {
+function PageTransition({ children }: { children: ReactNode }) {
+  const reduceMotion = useReducedMotion();
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={reduceMotion ? false : { opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.3, ease: 'easeOut' }}
+      exit={reduceMotion ? undefined : { opacity: 0, y: -12 }}
+      transition={{ duration: 0.22, ease: 'easeOut' }}
     >
       {children}
     </motion.div>
   );
 }
 
+function Footer() {
+  return (
+    <footer className="border-t border-slate-200 bg-white">
+      <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 md:grid-cols-[1.2fr_1fr_1fr] lg:px-8">
+        <div>
+          <div className="flex items-center gap-3">
+            <img
+              src="/images/logo/logo.png"
+              alt="SmartRetailX logo"
+              className="h-8 w-auto"
+              loading="lazy"
+              decoding="async"
+            />
+            <span className="font-black text-slate-950">SmartRetailX</span>
+          </div>
+          <p className="mt-4 max-w-sm text-sm leading-6 text-slate-600">
+            An academic project website for a personalized retail intelligence platform built around inclusive voice interaction,
+            explainable analytics, and targeted promotions.
+          </p>
+        </div>
+        <div>
+          <h2 className="text-sm font-black uppercase tracking-[0.18em] text-slate-500">Main Tabs</h2>
+          <div className="mt-4 grid grid-cols-2 gap-2">
+            {navLinks.slice(0, 6).map((link) => (
+              <Link key={link.name} to={link.path} className="text-sm font-semibold text-slate-600 hover:text-blue-700">
+                {link.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+        <div>
+          <h2 className="text-sm font-black uppercase tracking-[0.18em] text-slate-500">Files</h2>
+          <p className="mt-4 text-sm leading-6 text-slate-600">
+            Documents are served from <span className="font-mono text-xs">public/files/documents</span>; slides are served from{' '}
+            <span className="font-mono text-xs">public/files/slides</span>.
+          </p>
+        </div>
+      </div>
+      <div className="border-t border-slate-200 py-4 text-center text-xs font-semibold text-slate-500">
+        © 2026 SmartRetailX. Built for Sri Lankan Retail Innovation.
+      </div>
+    </footer>
+  );
+}
+
 export default function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-[#0a0a0a] text-gray-100 font-sans selection:bg-blue-500/30 selection:text-blue-200">
+      <div className="min-h-screen bg-slate-50 text-slate-900 selection:bg-blue-200 selection:text-blue-950">
         <Navbar />
         <main className="pt-16">
           <AnimatePresence mode="wait">
             <Routes>
               <Route path="/" element={<PageTransition><Home /></PageTransition>} />
-              <Route path="/voice" element={<PageTransition><VoiceAssistant /></PageTransition>} />
-              <Route path="/segmentation" element={<PageTransition><Segmentation /></PageTransition>} />
-              <Route path="/analytics" element={<PageTransition><BIDashboard /></PageTransition>} />
-              <Route path="/promotions" element={<PageTransition><PromotionEngine /></PageTransition>} />
+              <Route path="/domain" element={<PageTransition><Domain /></PageTransition>} />
+              <Route path="/milestones" element={<PageTransition><Milestones /></PageTransition>} />
+              <Route path="/documents" element={<PageTransition><Documents /></PageTransition>} />
+              <Route path="/slides" element={<PageTransition><Presentations /></PageTransition>} />
+              <Route path="/about" element={<PageTransition><About /></PageTransition>} />
+              <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
+              <Route path="*" element={<PageTransition><Home /></PageTransition>} />
             </Routes>
           </AnimatePresence>
         </main>
-        
-        <footer className="bg-black/50 border-t border-white/5 py-12 mt-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="space-y-4">
-                <div className="text-white font-bold text-lg flex items-center gap-2">
-                  <div className="w-6 h-6 bg-blue-600 rounded flex items-center justify-center text-xs">S</div>
-                  SmartRetailX
-                </div>
-                <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
-                  Next-generation e-commerce platform bridging the gap between raw data and personalized human experiences.
-                </p>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <h4 className="text-white font-semibold text-sm">Platform</h4>
-                  <ul className="text-gray-400 text-sm space-y-1">
-                    <li><Link to="/voice" className="hover:text-blue-400">Voice AI</Link></li>
-                    <li><Link to="/segmentation" className="hover:text-blue-400">Segments</Link></li>
-                    <li><Link to="/analytics" className="hover:text-blue-400">Analytics</Link></li>
-                  </ul>
-                </div>
-                <div className="space-y-2">
-                  <h4 className="text-white font-semibold text-sm">Tech</h4>
-                  <ul className="text-gray-400 text-sm space-y-1">
-                    <li><span className="opacity-70">Deep Learning</span></li>
-                    <li><span className="opacity-70">Microservices</span></li>
-                    <li><span className="opacity-70">Explainable AI</span></li>
-                  </ul>
-                </div>
-              </div>
-              <div className="space-y-4 flex flex-col items-start md:items-end">
-                <div className="flex gap-4">
-                  <a href="#" className="p-2 bg-white/5 hover:bg-white/10 rounded-full transition-colors text-gray-400 hover:text-white">
-                    <Github className="w-5 h-5" />
-                  </a>
-                  <a href="#" className="p-2 bg-white/5 hover:bg-white/10 rounded-full transition-colors text-gray-400 hover:text-white">
-                    <ExternalLink className="w-5 h-5" />
-                  </a>
-                </div>
-                <p className="text-gray-500 text-xs mt-auto">
-                  © 2026 SmartRetailX. Built for Sri Lankan Retail Innovation.
-                </p>
-              </div>
-            </div>
-          </div>
-        </footer>
+        <Footer />
       </div>
     </Router>
   );
