@@ -1,15 +1,84 @@
-import { Cpu, Database, GitBranch, Goal, Layers, SearchCheck } from 'lucide-react';
+import {
+  BarChart3,
+  BrainCircuit,
+  Boxes,
+  Cpu,
+  Database,
+  FileCode2,
+  FlaskConical,
+  GitBranch,
+  Globe,
+  Goal,
+  Layers,
+  LineChart,
+  Monitor,
+  Network,
+  Rocket,
+  SearchCheck,
+  Server,
+  Ship,
+  Sparkles,
+  Waypoints,
+  Wind,
+  Workflow,
+} from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import PageHeader from '@/src/components/PageHeader';
 import { domainSections, systemModules } from '@/src/lib/siteData';
 
 const icons = [SearchCheck, GitBranch, Goal, Goal, Layers, Cpu];
 
+type TechnologyItem = {
+  name: string;
+  icon: LucideIcon;
+  iconColor: string;
+  iconBackground: string;
+};
+
+type TechnologyGroup = {
+  label: string;
+  tools: TechnologyItem[];
+};
+
 const technologyGroups = [
-  { label: 'Frontend', tools: ['React', 'TypeScript', 'Tailwind CSS', 'Recharts'] },
-  { label: 'Services', tools: ['FastAPI', 'Flask', 'NestJS', 'REST APIs'] },
-  { label: 'Data & ML', tools: ['PostgreSQL', 'Prophet', 'XGBoost', 'SHAP', 'Scikit-learn'] },
-  { label: 'Delivery', tools: ['Docker', 'Kubernetes', 'GitHub Pages', 'CI/CD'] },
-];
+  {
+    label: 'Frontend',
+    tools: [
+      { name: 'React', icon: Monitor, iconColor: 'text-sky-700', iconBackground: 'bg-sky-100' },
+      { name: 'TypeScript', icon: FileCode2, iconColor: 'text-blue-700', iconBackground: 'bg-blue-100' },
+      { name: 'Tailwind CSS', icon: Wind, iconColor: 'text-cyan-700', iconBackground: 'bg-cyan-100' },
+      { name: 'Recharts', icon: BarChart3, iconColor: 'text-indigo-700', iconBackground: 'bg-indigo-100' },
+    ],
+  },
+  {
+    label: 'Services',
+    tools: [
+      { name: 'FastAPI', icon: Waypoints, iconColor: 'text-emerald-700', iconBackground: 'bg-emerald-100' },
+      { name: 'Flask', icon: FlaskConical, iconColor: 'text-slate-700', iconBackground: 'bg-slate-100' },
+      { name: 'NestJS', icon: Boxes, iconColor: 'text-rose-700', iconBackground: 'bg-rose-100' },
+      { name: 'REST APIs', icon: Server, iconColor: 'text-violet-700', iconBackground: 'bg-violet-100' },
+    ],
+  },
+  {
+    label: 'Data & ML',
+    tools: [
+      { name: 'PostgreSQL', icon: Database, iconColor: 'text-sky-700', iconBackground: 'bg-sky-100' },
+      { name: 'Prophet', icon: LineChart, iconColor: 'text-amber-700', iconBackground: 'bg-amber-100' },
+      { name: 'XGBoost', icon: Rocket, iconColor: 'text-orange-700', iconBackground: 'bg-orange-100' },
+      { name: 'SHAP', icon: Sparkles, iconColor: 'text-fuchsia-700', iconBackground: 'bg-fuchsia-100' },
+      { name: 'Scikit-learn', icon: BrainCircuit, iconColor: 'text-teal-700', iconBackground: 'bg-teal-100' },
+    ],
+  },
+  {
+    label: 'Delivery',
+    tools: [
+      { name: 'Docker', icon: Ship, iconColor: 'text-blue-700', iconBackground: 'bg-blue-100' },
+      { name: 'Kubernetes', icon: Network, iconColor: 'text-indigo-700', iconBackground: 'bg-indigo-100' },
+      { name: 'GitHub Pages', icon: Globe, iconColor: 'text-zinc-700', iconBackground: 'bg-zinc-100' },
+      { name: 'CI/CD', icon: Workflow, iconColor: 'text-emerald-700', iconBackground: 'bg-emerald-100' },
+    ],
+  },
+] satisfies TechnologyGroup[];
 
 export default function Domain() {
   return (
@@ -75,11 +144,18 @@ export default function Domain() {
                 <h3 className="font-black text-slate-950">{group.label}</h3>
               </div>
               <ul className="mt-5 space-y-2">
-                {group.tools.map((tool) => (
-                  <li key={tool} className="rounded-md bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-700">
-                    {tool}
-                  </li>
-                ))}
+                {group.tools.map((tool) => {
+                  const ToolIcon = tool.icon;
+
+                  return (
+                    <li key={tool.name} className="flex items-center gap-3 rounded-md bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-700">
+                      <span className={`flex h-7 w-7 items-center justify-center rounded-md ${tool.iconBackground}`}>
+                        <ToolIcon className={`h-4 w-4 ${tool.iconColor}`} aria-hidden="true" />
+                      </span>
+                      <span>{tool.name}</span>
+                    </li>
+                  );
+                })}
               </ul>
             </article>
           ))}
